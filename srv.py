@@ -2,15 +2,20 @@
 import numpy as np
 import os
 from flask import Flask, request, render_template, make_response
-from sklearn.externals import joblib
+# from sklearn.externals import joblib
+import joblib
+from pyngrok import ngrok
 
 app = Flask(__name__, static_url_path='/static')
 model = joblib.load('model/model.pkl')
 
-@app.route("/")
-def hello():
-    return "Hello World!"
-'''
+publ_url = ngrok.connect(port='8501')
+print(publ_url)
+
+# @app.route("/")
+# def hello():
+#     return "Hello World!"
+
 @app.route('/')
 def display_gui():
     return render_template('template.html')
@@ -40,7 +45,7 @@ def verificar():
 	print("Classe Predita: {}".format(str(classe)))
 
 	return render_template('template.html',classe=str(classe))
-'''
+
 if __name__ == "__main__":
         port = int(os.environ.get('PORT', 80))
         app.run(host='0.0.0.0', port=port)
